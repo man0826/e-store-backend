@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String
+  password  String
+  cartItems CartItem[]
+  orders    Order[]
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String
+  slug        String
+  description String
+  images      String[]
+  price       Int
+  colors      ProductColor[]
+  sizes       ProductSize[]
+  createdAt   DateTime       @default(now())
+  cartItems   CartItem[]
+  categories  Category[]
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  slug     String
+  products Product[]
+}
+
+model CartItem {
+  id          String       @id @default(uuid())
+  quantity    Int          @default(1)
+  totalAmount Int          @default(0)
+  // size        ProductSize  @default(FREE)
+  // color       ProductColor @default(NONE)
+  size        ProductSize
+  color       ProductColor
+  product     Product      @relation(fields: [productId], references: [id])
+  productId   Int
+  user        User         @relation(fields: [userId], references: [id])
+  userId      String
+  order       Order?       @relation(fields: [orderId], references: [id])
+  orderId     String?
+  status      CartStatus   @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Order {
+  id          String     @id @default(uuid())
+  totalAmount Int
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String
+  createdAt   DateTime   @default(now())
+  cart        CartItem[]
+}
+
+enum ProductSize {
+  S
+  M
+  L
+  XL
+  FREE
+}
+
+enum ProductColor {
+  BLACK
+  WHITE
+  GRAY
+  RED
+  NAVY
+  AQUA
+  GREEN
+  YELLOW
+  BLUE
+  SKYBLUE
+  BROWN
+  OLIVE
+  SILVER
+  PURPLE
+  ORANGE
+  PINK
+  BEIGE
+  GREENYELLOW
+  BURLYWOOD
+  // NONE
+}
+
+enum CartStatus {
+  PENDING
+  PAID
+}

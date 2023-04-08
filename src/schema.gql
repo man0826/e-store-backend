@@ -1,0 +1,153 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserModel {
+  id: ID!
+  name: String!
+  email: String!
+  cartItems: [CartItemModel!]!
+}
+
+type CartItemModel {
+  id: ID!
+  quantity: Int!
+  totalAmount: Int!
+  size: ProductSize
+  color: ProductColor
+  userId: String!
+  productId: Int!
+  orderId: String
+  status: CartStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  user: UserModel!
+  product: ProductModel!
+}
+
+enum ProductSize {
+  S
+  M
+  L
+  XL
+  FREE
+}
+
+enum ProductColor {
+  BLACK
+  WHITE
+  GRAY
+  RED
+  NAVY
+  AQUA
+  GREEN
+  YELLOW
+  BLUE
+  SKYBLUE
+  BROWN
+  OLIVE
+  SILVER
+  PURPLE
+  ORANGE
+  PINK
+  BEIGE
+  GREENYELLOW
+  BURLYWOOD
+}
+
+enum CartStatus {
+  PENDING
+  PAID
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthResponse {
+  user: UserModel!
+  access_token: String!
+}
+
+type CategoryModel {
+  id: ID!
+  name: String!
+  slug: String!
+  products: [ProductModel!]!
+}
+
+type ProductModel {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  images: [String!]!
+  price: Int!
+  colors: [String!]
+  sizes: [String!]
+  createdAt: DateTime!
+  categories: [CategoryModel!]
+}
+
+type OrderModel {
+  id: ID!
+  userId: String!
+  totalAmount: Int!
+  createdAt: DateTime!
+  cart: [CartItemModel!]!
+}
+
+type CheckoutSessionResponse {
+  status: String
+}
+
+type CreateSessionResponse {
+  url: String!
+}
+
+type Query {
+  loginUser: UserModel!
+  products: [ProductModel!]!
+  findProductBySlug(productSlug: String!): ProductModel!
+  search(name: String!): [ProductModel!]!
+  cartItems: [CartItemModel!]!
+  getOrders(userId: String!): [OrderModel!]!
+  createCheckoutSession: CreateSessionResponse!
+  getOrderStatusFromStripe(id: String!): CheckoutSessionResponse!
+  categories: [CategoryModel!]!
+  findCategoryBySlug(categorySlug: String!): CategoryModel!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): UserModel!
+  updateUser(updateUserInput: UpdateUserInput!): UserModel!
+  authenticate(authInput: AuthInput!): AuthResponse!
+  addCart(cartInput: CartInput!): CartItemModel!
+  deleteCartItem(cartId: String!): CartItemModel!
+  incrementCartItem(cartId: String!): CartItemModel!
+  decrementCartItem(cartId: String!): CartItemModel!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+}
+
+input AuthInput {
+  email: String!
+  password: String!
+}
+
+input CartInput {
+  productId: Int!
+  quantity: Int! = 1
+  size: ProductSize
+  color: ProductColor
+}
