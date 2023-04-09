@@ -4,9 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-// import { APP_GUARD } from '@nestjs/core';
 import { PrismaService } from './prisma.service';
-// import { JwtAuthGuard } from './auth/gards/jwt-auth.guard';
 import { ProductsModule } from './products/products.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
@@ -14,17 +12,21 @@ import { StripeModule } from 'nestjs-stripe';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PaymentModule } from './payment/payment.module';
 import { CategoryModule } from './category/category.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env.local'],
+      envFilePath: ['.env', '.env.local'],
       isGlobal: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       context: ({ req }) => ({ req }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      playground: true,
+      introspection: true,
     }),
     StripeModule.forRootAsync({
       inject: [ConfigService],
@@ -41,12 +43,7 @@ import { CategoryModule } from './category/category.module';
     PaymentModule,
     CategoryModule,
   ],
-  providers: [
-    PrismaService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
-  ],
+  controllers: [AppController],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}

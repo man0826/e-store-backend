@@ -16,11 +16,6 @@ export class ProductsResolver {
     return this.productsService.getProducts();
   }
 
-  // @Query(() => ProductModel)
-  // findProductById(@Args('productId', { type: () => Int }) productId: number) {
-  //   return this.productsService.findProductById(productId);
-  // }
-
   @Query(() => ProductModel)
   findProductBySlug(@Args('productSlug') productSlug: string) {
     return this.productsService.findProductBySlug(productSlug);

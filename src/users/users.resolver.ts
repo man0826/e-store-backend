@@ -37,11 +37,6 @@ export class UsersResolver {
     return this.usersService.update(user.id, updateUserInput);
   }
 
-  // @Mutation(() => UserModel)
-  // removeUser(@Args('id', { type: () => ID }) id: string) {
-  //   return this.usersService.remove(id);
-  // }
-
   @Query(() => UserModel, { name: 'loginUser' })
   @UseGuards(GqlAuthGuard)
   getLoginUser(@CurrentUser() user: UserModel) {

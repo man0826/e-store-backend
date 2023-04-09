@@ -1,11 +1,4 @@
-import {
-  Args,
-  Int,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ProductModel } from 'src/products/entities/product.model';
 import { CategoryModel } from './entities/category.model';
 import { CategoryService } from './category.service';
@@ -22,13 +15,6 @@ export class CategoryResolver {
   getCategories() {
     return this.categoryService.getCategories();
   }
-
-  // @Query(() => CategoryModel)
-  // findCategoryById(
-  //   @Args('categoryId', { type: () => Int }) categoryId: number,
-  // ) {
-  //   return this.categoryService.findCategoryById(categoryId);
-  // }
 
   @Query(() => CategoryModel)
   findCategoryBySlug(@Args('categorySlug') slug: string) {

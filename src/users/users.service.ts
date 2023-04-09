@@ -35,10 +35,6 @@ export class UsersService {
     });
   }
 
-  // async findAll(): Promise<User[]> {
-  //   return await this.prisma.user.findMany();
-  // }
-
   async findByEmail(email: string): Promise<User> {
     return await this.prisma.user.findUnique({
       where: {
@@ -69,12 +65,4 @@ export class UsersService {
       );
     }
   }
-
-  // async remove(id: string): Promise<User> {
-  //   return await this.prisma.user.delete({
-  //     where: {
-  //       id,
-  //     },
-  //   });
-  // }
 }

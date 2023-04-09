@@ -2,7 +2,7 @@
 CREATE TYPE "ProductSize" AS ENUM ('S', 'M', 'L', 'XL', 'FREE');
 
 -- CreateEnum
-CREATE TYPE "ProductColor" AS ENUM ('BLACK', 'WHITE', 'GRAY', 'RED', 'NAVY', 'AQUA', 'NONE');
+CREATE TYPE "ProductColor" AS ENUM ('BLACK', 'WHITE', 'GRAY', 'RED', 'NAVY', 'AQUA', 'GREEN', 'YELLOW', 'BLUE', 'SKYBLUE', 'BROWN', 'OLIVE', 'SILVER', 'PURPLE', 'ORANGE', 'PINK', 'BEIGE', 'GREENYELLOW', 'BURLYWOOD');
 
 -- CreateEnum
 CREATE TYPE "CartStatus" AS ENUM ('PENDING', 'PAID');
@@ -45,8 +45,9 @@ CREATE TABLE "Category" (
 CREATE TABLE "CartItem" (
     "id" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL DEFAULT 1,
-    "size" "ProductSize" NOT NULL DEFAULT 'FREE',
-    "color" "ProductColor" NOT NULL DEFAULT 'NONE',
+    "totalAmount" INTEGER NOT NULL DEFAULT 0,
+    "size" "ProductSize" NOT NULL,
+    "color" "ProductColor" NOT NULL,
     "productId" INTEGER NOT NULL,
     "userId" TEXT NOT NULL,
     "orderId" TEXT,
